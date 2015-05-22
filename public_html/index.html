@@ -1,0 +1,42 @@
+<!doctype html>
+<html ng-app>
+    <head>
+        <title>Bio-ABA - The new Integrator between Applications, Biological databases and algorithms.</title>
+
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.dropdown-toggle').dropdown();
+            });
+        </script>
+        <script src="js/hello.js"></script>
+    </head>
+
+    <body>
+        <div class='container-fluid'>
+            <div ng-include="'inc/menu.html'"></div>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <label>Search: <input ng-model="searchText"></label>
+                </div>
+            </div>
+            <div class='row'>
+                <div ng-controller="Hello">
+                    <div ng-repeat="biodatabase in biodatabases | filter:searchText">
+                        <div class='col-md-4'>
+                            <div class='panel panel-primary'>
+                                <div class='panel-heading'>{{biodatabase.id}} - Database {{biodatabase.name}}</div>
+                                <div class='panel-body'>{{biodatabase.description}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
