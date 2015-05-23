@@ -3,8 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="UTF-8">
-        <title>{{'TITLE'| translate}}</title>
-
+        <title>{{'TITLE' | translate}}</title>
+        
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -24,21 +24,6 @@
         <div class='container-fluid'>
             <div ng-include="'inc/menu.html'"></div>
             <div class='row'>
-                <div ng-controller="Hello">
-                    <div ng-repeat="biodatabase in biodatabases">
-                        <div class='col-md-4'>
-                            <div class='panel panel-primary'>
-                                <div class='panel-heading'>{{biodatabase.id}} - Database {{biodatabase.name}}</div>
-                                <div class='panel-body'>{{biodatabase.description}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class='row' ng-controller="Hello">
-                <div class='col-md-12'>
-                    <select ng-model='selectedDB' ng-options='database.name for database in biodatabases'></select>
-                </div>
             </div>
         </div>
 

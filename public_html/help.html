@@ -3,8 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="UTF-8">
-        <title>{{'TITLE'| translate}}</title>
-
+        <title>{{'TITLE' | translate}}</title>
+        
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -23,22 +23,26 @@
     <body>
         <div class='container-fluid'>
             <div ng-include="'inc/menu.html'"></div>
+        </div>
+        <div class='container'>
             <div class='row'>
-                <div ng-controller="Hello">
-                    <div ng-repeat="biodatabase in biodatabases">
-                        <div class='col-md-4'>
-                            <div class='panel panel-primary'>
-                                <div class='panel-heading'>{{biodatabase.id}} - Database {{biodatabase.name}}</div>
-                                <div class='panel-body'>{{biodatabase.description}}</div>
-                            </div>
-                        </div>
+                <div class='col-lg-10 col-md-10 col-xs-12'>
+                    <div class="page-header">
+                    <h1> {{'SIMPLE_TITLE' | translate}}  <small>{{'SIMPLE_SUBTITLE' | translate}}</small></h1>
                     </div>
+                    <p> O Bio-ABA foi desenvolvido com o objetivo de aproximar a comunidade academica e
+                        os laboratórios envolvidos com a biologia molecular, se propondo a ser um ponto
+                        de unificação de conhecimentos e de disseminação de tecnologia.</p>
+                    <p> Através do Bio-ABA é possível utilizar e disponibilizar Algoritmos, Aplicações e
+                        Bases de Dados da Biologia Molecular.</p>
                 </div>
             </div>
-            <div class='row' ng-controller="Hello">
-                <div class='col-md-12'>
-                    <select ng-model='selectedDB' ng-options='database.name for database in biodatabases'></select>
-                </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                <div class='col-lg-6'>Iniciando</div>
+                <div class='col-lg-6'>Como contribuir</div>
             </div>
         </div>
 
