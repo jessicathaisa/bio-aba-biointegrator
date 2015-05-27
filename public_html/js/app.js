@@ -11,9 +11,11 @@ function RunningTask($scope, $cookieStore) {
 }
 ;
 
-function BioTask($scope, $http, $cookieStore) {
+function BioTask($scope, $location, $http, $cookieStore) {
     $scope.loadingDatabase = false;
     $scope.loadingAlgorithm = false;
+    $scope.taskParameters = [];
+
     $http.get('http://localhost:8080/taskmanager-web/rest/biodatabase').
             success(function (data) {
                 $scope.biodatabases = data;
@@ -26,12 +28,24 @@ function BioTask($scope, $http, $cookieStore) {
                 $scope.selectedAlg = "";
                 $scope.loadingAlgorithm = true;
             });
+    $scope.selectedAlgorithmChanged = function () {
+        $scope.taskParameters = [];
+        if ($scope.selectedAlg !== "") {
+            for (var index in $scope.selectedAlg.parameters) {
+                $scope.taskParameters.push({
+                    'algorithmParameter': $scope.selectedAlg.parameters[index],
+                    'parameterValue': ''
+                });
+            }
+        }
+    };
     $scope.submit = function () {
-        $http.post('http://localhost:8080/taskmanager-web/rest/biotask', {database: $scope.selectedDB, algorithm: $scope.selectedAlg}).
+        $http.post('http://localhost:8080/taskmanager-web/rest/biotask', {query: $scope.query, database: $scope.selectedDB, algorithm: $scope.selectedAlg, parameters: $scope.taskParameters}).
                 success(function (data) {
                     $scope.task = data;
                     $cookieStore.put('LAST_TASKKEY', $scope.task.taskKey);
                     alert($scope.task.taskKey);
+                    $location.path('runningTask.html');
                 });
     };
 }
@@ -73,10 +87,9 @@ app.config(['$translateProvider', function ($translateProvider) {
             'ALGORITHMNAME_LABEL': 'Name',
             'ALGORITHMDESCRIPTION_LABEL': 'Description',
             'ALGORITHMPROVIDER_LABEL': 'Provider',
-            'ALGORITHMPROVIDER_NULL' : "Not informed provider",
-            
-            
-            'SENT_TASK' : "Sent Task"
+            'ALGORITHMFORMAT_LABEL': 'Allowed formats',
+            'ALGORITHMPROVIDER_NULL': "Not informed provider",
+            'SENT_TASK': "Sent Task"
         });
         // Simply register translation table as object hash
         $translateProvider.translations('pt_BR', {
@@ -96,10 +109,9 @@ app.config(['$translateProvider', function ($translateProvider) {
             'ALGORITHMNAME_LABEL': 'Nome',
             'ALGORITHMDESCRIPTION_LABEL': 'Descrição',
             'ALGORITHMPROVIDER_LABEL': 'Provedor',
-            'ALGORITHMPROVIDER_NULL' : "Provedor não informado",
-            
-            
-            'SENT_TASK' : "Enviar Tarefa"
+            'ALGORITHMFORMAT_LABEL': 'Formatos aceitos',
+            'ALGORITHMPROVIDER_NULL': "Provedor não informado",
+            'SENT_TASK': "Enviar Tarefa"
         });
 
         $translateProvider.uses('en_EN');

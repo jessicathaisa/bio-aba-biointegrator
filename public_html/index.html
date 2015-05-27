@@ -28,13 +28,20 @@
 
         <div class='container' ng-controller="BioTask">
             <div class='row well well-sm' >
+                <div class='col-md-8'>
+                    <h4>Query</h4>
+                    <p></p>
+                    <textarea class="form-control" rows="5" ng-model='query'></textarea>
+                </div>
+            </div>
+            <div class='row well well-sm' >
                 <div class='col-md-6'>
                     <h4>{{'DATABASETITLE_LABEL'| translate}}</h4>
                     <img ng-hide="loadingDatabase" src="img/ajax-loader.gif" />
                     <select class="form-control width-max-sized"
                             ng-model='selectedDB'
                             ng-show="loadingDatabase"
-                            ng-options='database.name for database in biodatabases'>
+                            ng-options="database.name for database in biodatabases">
                         <option value="">{{'DATABASETITLE_SELECT'| translate}}</option>
                     </select>
                 </div>
@@ -55,35 +62,42 @@
                 <div class='col-md-6'>
                     <h4>{{'ALGORITHMTITLE_LABEL'| translate}}</h4>
                     <img ng-hide="loadingAlgorithm" src="img/ajax-loader.gif" />
-                <select class="form-control width-max-sized"
-                        ng-model='selectedAlg'
-                        ng-show='loadingAlgorithm'
-                        ng-options='algorithm.name for algorithm in bioalgorithms'>
-                    <option value="">{{'ALGORITHMTITLE_SELECT'| translate}}</option>
-                </select>
-            </div>
-            <div class="col-md-6" ng-show="selectedAlg">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h4>{{'ALGORITHMNAME_LABEL'| translate}}: {{selectedAlg.name}} 
-                            <small ng-show="selectedAlg.allowedFormats">{{'ALGORITHMFORMAT_LABEL'| translate}}:</small><small ng-repeat='format in selectedAlg.allowedFormats'>{{format}}</small>
-                        </h4>
-                        {{'ALGORITHMDESCRIPTION_LABEL'| translate}}:
-                        <p>{{selectedAlg.description}}</p>
-                        {{'ALGORITHMPROVIDER_LABEL'| translate}}: 
-                        <a href="{{selectedAlg.url}}" ng-show='selectedAlg.provider'>{{selectedAlg.provider}}</a>
-                        <a href="{{selectedAlg.url}}" ng-hide='selectedAlg.provider'>{{'ALGORITHMPROVIDER_NULL'| translate}}</a>
+                    <select class="form-control width-max-sized"
+                            ng-model='selectedAlg'
+                            ng-show='loadingAlgorithm'
+                            ng-options="algorithm.name for algorithm in bioalgorithms | filter:{allowedFormats:selectedDB.format||''}"
+                            ng-change="selectedAlgorithmChanged()">
+                        <option value="">{{'ALGORITHMTITLE_SELECT'| translate}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-show="selectedAlg">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>{{'ALGORITHMNAME_LABEL'| translate}}: {{selectedAlg.name}} 
+                                <small ng-show="selectedAlg.allowedFormats">{{'ALGORITHMFORMAT_LABEL'| translate}}:</small><small ng-repeat='format in selectedAlg.allowedFormats'>{{format}} |</small>
+                            </h4>
+                            {{'ALGORITHMDESCRIPTION_LABEL'| translate}}:
+                            <p>{{selectedAlg.description}}</p>
+                            {{'ALGORITHMPROVIDER_LABEL'| translate}}: 
+                            <a href="{{selectedAlg.url}}" ng-show='selectedAlg.provider'>{{selectedAlg.provider}}</a>
+                            <a href="{{selectedAlg.url}}" ng-hide='selectedAlg.provider'>{{'ALGORITHMPROVIDER_NULL'| translate}}</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class='row' >
-            <div class='col-md-12'>
-                <button type="button" ng-click="submit()" class="btn btn-primary"> {{'SENT_TASK'| translate}} </button>
+            <div class='row well well-sm' ng-show='selectedAlg'>
+                <div class='col-md-3' ng-repeat='parameter in selectedAlg.parameters'>
+                    <label class="control-label">{{parameter.exibitionName}}</label>
+                    <input class="form-control input-sm" ng-model="taskParameters[$index].parameterValue" type="text">
+                </div>
             </div>
+            <div class='row' >
+                <div class='col-md-12'>
+                    <button type="button" ng-click="submit()" class="btn btn-primary"> {{'SENT_TASK'| translate}} </button>
+                </div>
+            </div>
+
         </div>
 
-    </div>
-
-</body>
+    </body>
 </html>
