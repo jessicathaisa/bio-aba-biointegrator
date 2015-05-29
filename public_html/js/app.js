@@ -1,4 +1,4 @@
-var app = angular.module('bioIntegrator', ['controllers', 'ngTranslate']);
+var app = angular.module('bioIntegrator', ['controllers', 'ngTranslate', 'ngStorage']);
 var controllers = angular.module('controllers', []);
 
 controllers.controller('RunningTask', RunningTask);
@@ -6,12 +6,27 @@ controllers.controller('BioTask', BioTask);
 controllers.controller('SwitchLanguageController', SwitchLanguageController);
 controllers.controller('HeaderController', HeaderController);
 
-function RunningTask($scope, $cookieStore) {
-    $scope.lastTaskKey = $cookieStore.get('LAST_TASKKEY');
+function RunningTask($scope, $http, $localStorage, $timeout) {
+    $scope.lastTaskKey = $localStorage.message;
+    $scope.count = 0;
+
+    var poll = function () {
+        $timeout(function () {
+            if ($scope.task === undefined || $scope.task.result === null) {
+                $scope.count++;
+                $http.get('http://localhost:8080/taskmanager-web/rest/biotask/' + $scope.lastTaskKey).
+                        success(function (data) {
+                            $scope.task = data;
+                        });
+                poll();
+            }
+        }, 1000);
+    };
+    poll();
 }
 ;
 
-function BioTask($scope, $location, $http, $cookieStore) {
+function BioTask($scope, $location, $http, $localStorage) {
     $scope.loadingDatabase = false;
     $scope.loadingAlgorithm = false;
     $scope.taskParameters = [];
@@ -43,9 +58,9 @@ function BioTask($scope, $location, $http, $cookieStore) {
         $http.post('http://localhost:8080/taskmanager-web/rest/biotask', {query: $scope.query, database: $scope.selectedDB, algorithm: $scope.selectedAlg, parameters: $scope.taskParameters}).
                 success(function (data) {
                     $scope.task = data;
-                    $cookieStore.put('LAST_TASKKEY', $scope.task.taskKey);
+                    $localStorage.message = $scope.task.taskKey;
                     alert($scope.task.taskKey);
-                    $location.path('runningTask.html');
+                    $location.absUrl($location.host() + '/runningTask.html');
                 });
     };
 }

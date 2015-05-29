@@ -17,15 +17,26 @@
         </script>
         <script src="js/angular-translate.js"></script>
         <script src="js/translationpack.js"></script>
+        <script src="js/ngStorage.js"></script>
         <script src="js/app.js"></script>
     </head>
 
     <body>
-        <div class='container-fluid' ng-controller="RunningTask">
+        <div class='container-fluid'>
             <div ng-include="'inc/menu.html'"></div>
+        </div>
+        <div class='container' ng-controller="RunningTask">
             <div class='row' >
-                <div class='col-md-12'>
-                    {{lastTaskKey}}
+                <div ng-hide='task.result' class='col-md-12 well well-sm'>
+                    <p>Running {{task.taskKey}} ... </p>
+                </div>
+                <div ng-show='task.result' class='col-md-12 well well-sm'>
+                    <p>Showing results for Task {{task.taskKey}}. </p>
+                </div>
+            </div>
+            <div class='row' >
+                <div ng-show='task.result' class='col-md-12'>
+                    {{task.result}}
                 </div>
             </div>
             
