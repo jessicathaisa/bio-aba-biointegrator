@@ -54,14 +54,41 @@ function BioTask($scope, $location, $http, $localStorage) {
             }
         }
     };
+    $scope.$on("fileSelected", function (event, args) {
+        $scope.$apply(function () {
+            //add the file object to the scope's files collection
+            $scope.file = args.file;
+            alert("Arquivo!");
+        });
+    });
     $scope.submit = function () {
-        $http.post('http://localhost:8080/taskmanager-web/rest/biotask', {query: $scope.query, database: $scope.selectedDB, algorithm: $scope.selectedAlg, parameters: $scope.taskParameters}).
-                success(function (data) {
-                    $scope.task = data;
-                    $localStorage.message = $scope.task.taskKey;
-                    alert($scope.task.taskKey);
-                    $location.absUrl($location.host() + '/runningTask.html');
-                });
+        var formData = new FormData();
+        formData.append('task', new Blob([JSON.stringify({
+                database: $scope.selectedDB,
+                algorithm: $scope.selectedAlg,
+                parameters: $scope.taskParameters
+            })], {type: "application/json"}));
+
+        if ($scope.file !== undefined && $scope.file !== null && $scope.file !== "")
+            formData.append('file', $scope.file);
+        else
+            formData.append('query', new Blob([JSON.stringify({
+                    query: $scope.query
+                })], {type: "application/json"}));
+
+        $http.post("http://localhost:8080/taskmanager-web/rest/biotask", formData, {
+            transformRequest: angular.identity,
+            headers: {
+                'Content-Type': undefined
+            }
+        }).success(function (data) {
+            $scope.task = data;
+            $localStorage.message = $scope.task.taskKey;
+            alert($scope.task.taskKey);
+            $location.absUrl($location.host() + '/runningTask.html');
+        }).error(function () {
+            alert("erro!");
+        });
     };
 }
 ;
@@ -133,3 +160,19 @@ app.config(['$translateProvider', function ($translateProvider) {
         $translateProvider.rememberLanguage(true);
 
     }]);
+
+app.directive('fileUpload', function () {
+    return {
+        scope: true, //create a new scope
+        link: function (scope, el, attrs) {
+            el.bind('change', function (event) {
+                var files = event.target.files;
+                //iterate files since 'multiple' may be specified on the element
+                for (var i = 0; i < files.length; i++) {
+                    //emit event upward
+                    scope.$emit("fileSelected", {file: files[i]});
+                }
+            });
+        }
+    };
+});
