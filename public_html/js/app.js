@@ -14,7 +14,7 @@ function RunningTask($scope, $http, $localStorage, $timeout) {
         $timeout(function () {
             if ($scope.task === undefined || $scope.task.result === null) {
                 $scope.count++;
-                $http.get('http://localhost:8080/taskmanager-web/rest/biotask/' + $scope.lastTaskKey).
+                $http.get('http://localhost:9966/taskmanager-web/rest/biotask/' + $scope.lastTaskKey).
                         success(function (data) {
                             $scope.task = data;
                         });
@@ -31,13 +31,13 @@ function BioTask($scope, $location, $http, $localStorage) {
     $scope.loadingAlgorithm = false;
     $scope.taskParameters = [];
 
-    $http.get('http://localhost:8080/taskmanager-web/rest/biodatabase').
+    $http.get('http://localhost:9966/taskmanager-web/rest/biodatabase').
             success(function (data) {
                 $scope.biodatabases = data;
                 $scope.selectedDB = "";
                 $scope.loadingDatabase = true;
             });
-    $http.get('http://localhost:8080/taskmanager-web/rest/bioalgorithm').
+    $http.get('http://localhost:9966/taskmanager-web/rest/bioalgorithm').
             success(function (data) {
                 $scope.bioalgorithms = data;
                 $scope.selectedAlg = "";
@@ -76,7 +76,7 @@ function BioTask($scope, $location, $http, $localStorage) {
                     query: $scope.query
                 })], {type: "application/json"}));
 
-        $http.post("http://localhost:8080/taskmanager-web/rest/biotask", formData, {
+        $http.post("http://localhost:9966/taskmanager-web/rest/biotask", formData, {
             transformRequest: angular.identity,
             headers: {
                 'Content-Type': undefined
