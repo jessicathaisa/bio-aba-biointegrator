@@ -1,106 +1,50 @@
 <!doctype html>
-<html ng-app='bioIntegrator'>
+<html ng-app='bioIntegrator' ng-cloak>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <meta charset="UTF-8">
         <title>{{'TITLE'| translate}}</title>
-
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="css/bioIntegrator.css">
+        <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/bioIntegrator.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/sticky-footer.css" rel="stylesheet" type="text/css"/>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 $('.dropdown-toggle').dropdown();
             });
         </script>
-        <script src="js/angular-translate.js"></script>
-        <script src="js/ngStorage.js"></script>
-        <script src="js/translationpack.js"></script>
-        <script src="js/app.js"></script>
+        <script src="assets/js/angular-translate.js"></script>
+        <script src="assets/js/ngStorage.js"></script>
+        <script src="assets/js/translationpack.js"></script>
+        <script src="app/app.module.js"></script>
+        <script src="app/app.route.js"></script>
+
+        <!-- Shared Controllers -->
+        <script src="app/shared/LoggedController.js" type="text/javascript"></script>
+        <script src="app/shared/HeaderController.js" type="text/javascript"></script>
+        <script src="app/shared/SwitchLanguageController.js" type="text/javascript"></script>
+
+        <!-- Component Controllers -->
+        <script src="app/components/administrador/CategoriesController.js"></script>
+        <script src="app/components/administrador/LoginController.js"></script>
+        <script src="app/components/alignment/BioTaskController.js"></script>
+        <script src="app/components/alignment/RunningTaskController.js"></script>
+
+        <!-- Other JS's -->
+        <script src="app/components/alignment/alignmentAlgorithms.js" type="text/javascript"></script>
     </head>
 
-    <body>
+    <body ng-controller="LoggedController">
         <div class='container-fluid'>
-            <div ng-include="'inc/menu.html'"></div>
+            <div ng-include="'assets/inc/menu.html'"></div>
         </div>
 
-        <div class='container' ng-controller="BioTask">
-            <div class='row well well-sm' >
-                <div class='col-md-8'>
-                    <h4>Query</h4>
-                    <p>Write a query:</p>
-                    <textarea class="form-control" rows="5" ng-model='query'></textarea>
-                    <p>... Or Choose a file:</p>
-                    <input type="file" file-upload class="form-control"/>
-                </div>
-            </div>
-            <div class='row well well-sm' >
-                <div class='col-md-6'>
-                    <h4>{{'DATABASETITLE_LABEL'| translate}}</h4>
-                    <img ng-hide="loadingDatabase" src="img/ajax-loader.gif" />
-                    <select class="form-control width-max-sized"
-                            ng-model='selectedDB'
-                            ng-show="loadingDatabase"
-                            ng-options="database.name for database in biodatabases">
-                        <option value="">{{'DATABASETITLE_SELECT'| translate}}</option>
-                    </select>
-                </div>
-                <div class="col-md-6" ng-show="selectedDB">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h4>{{'DATABASENAME_LABEL'| translate}}: {{selectedDB.name}} 
-                                <small>{{'DATABASEFORMAT_LABEL'| translate}}: {{selectedDB.format}}</small>
-                            </h4>
-                            {{'DATABASEDESCRIPTION_LABEL'| translate}}:
-                            <p>{{selectedDB.description}}</p>
-                            URL: <a href="{{selectedDB.url}}">{{selectedDB.url}}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class='row well well-sm' >
-                <div class='col-md-6'>
-                    <h4>{{'ALGORITHMTITLE_LABEL'| translate}}</h4>
-                    <img ng-hide="loadingAlgorithm" src="img/ajax-loader.gif" />
-                    <select class="form-control width-max-sized"
-                            ng-model='selectedAlg'
-                            ng-show='loadingAlgorithm'
-                            ng-options="algorithm.name for algorithm in bioalgorithms | filter:{allowedFormats:selectedDB.format||''}"
-                            ng-change="selectedAlgorithmChanged()">
-                        <option value="">{{'ALGORITHMTITLE_SELECT'| translate}}</option>
-                    </select>
-                </div>
-                <div class="col-md-6" ng-show="selectedAlg">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h4>{{'ALGORITHMNAME_LABEL'| translate}}: {{selectedAlg.name}} 
-                                <small ng-show="selectedAlg.allowedFormats">{{'ALGORITHMFORMAT_LABEL'| translate}}:</small><small ng-repeat='format in selectedAlg.allowedFormats'>{{format}} |</small>
-                            </h4>
-                            {{'ALGORITHMDESCRIPTION_LABEL'| translate}}:
-                            <p>{{selectedAlg.description}}</p>
-                            {{'ALGORITHMPROVIDER_LABEL'| translate}}: 
-                            <a href="{{selectedAlg.url}}" ng-show='selectedAlg.provider'>{{selectedAlg.provider}}</a>
-                            <a href="{{selectedAlg.url}}" ng-hide='selectedAlg.provider'>{{'ALGORITHMPROVIDER_NULL'| translate}}</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class='row well well-sm' ng-show='selectedAlg'>
-                <div class='col-md-3' ng-repeat='parameter in selectedAlg.parameters'>
-                    <label class="control-label">{{parameter.exibitionName}}</label>
-                    <input class="form-control input-sm" ng-model="taskParameters[$index].parameterValue" type="text">
-                </div>
-            </div>
-            <div class='row' >
-                <div class='col-md-12'>
-                    <button type="button" ng-click="submit()" class="btn btn-primary"> {{'SENT_TASK'| translate}} </button>
-                </div>
-            </div>
+        <div ng-view></div>
 
-        </div>
-
+        <div ng-include="'assets/inc/footer.html'"></div>
     </body>
 </html>

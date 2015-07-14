@@ -11,3 +11,18 @@ and open the template in the editor.
 .width-max-sized{
     width: 100%;
 }
+
+.field-file{
+    padding: 5px;
+}
+
+.bottom-aligned-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.v-center {
+    display:table !important;
+    vertical-align:middle;
+}

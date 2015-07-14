@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" id="MenuSite">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -11,11 +11,15 @@
         </div>
         <div class="collapse navbar-collapse" ng-controller="HeaderController">
             <ul class="nav navbar-nav">
-                <li ng-class="{ active: isActive('/index.html')}"><a href="/BioIntegrator/index.html">{{'HOME' | translate}}</a></li>
-                <li ng-class="{ active: isActive('/help.html')}"><a href="/BioIntegrator/help.html">{{'HELP' | translate}}</a></li>
-                <li ng-class="{ active: isActive('/contact.html')}"><a href="/BioIntegrator/contact.html">{{'CONTACT' | translate}}</a></li>
+                    <li ng-hide="user"><a href="#/home/">{{'HOME' | translate}}</a></li>
+                    <li ng-hide="user"><a href="#/help/">{{'HELP' | translate}}</a></li>
+                    <li ng-hide="user"><a href="#/contact/">{{'CONTACT' | translate}}</a></li>
+                    <li ng-show="user"><a href="#/administrador/home/">{{'HOME' | translate}}</a></li>
+                    <li ng-show="user"><a href="#/administrador/categories/">{{'CATEGORIES' | translate}}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="user"><a href="#/administrador/login">Login</a></li>
+                <li ng-show="user"><a ng-click="logout()" href="">Sair</a></li>
                 <li ng-controller="SwitchLanguageController"><a ng-click="toggleLang()" href="">PT / EN</a></li>
             </ul>
         </div>
