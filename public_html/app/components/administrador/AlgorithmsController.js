@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 
-angular.module("bioIntegrator").controller("CategoriesController", CategoriesController);
+angular.module("bioIntegrator").controller("AlgorithmsController", AlgorithmsController);
 
-function CategoriesController($scope, $http, $location) {
+function AlgorithmsController($scope, $http, $location) {
     $scope.categoryList = [];
+    $scope.algorithmList = [];
 
     $scope.salvarAlteracoes;
 
@@ -29,14 +30,41 @@ function CategoriesController($scope, $http, $location) {
         description: "Algoritmos que permitem mudar os formatos dos banco de dadosAlgoritmos que fazem uma busca dupla de similaridades entre sequências",
         url: "/categories/doubleCheck"
     };
+    $scope.algorithmList[0] = {
+        id: "1",
+        name: "blastx",
+        description: "BlastX-Diamond",
+        provider: "Diamond",
+        url: "http://localhost:8080/bioalgorithmpoc-web/rest",
+        allowedFormats: "faa, fna, dbnma",
+        category: $scope.categoryList[1]
+    };
+    $scope.algorithmList[1] = {
+        id: "2",
+        name: "blastp",
+        description: "BlastP-Diamond",
+        provider: "Diamond",
+        url: "http://localhost:8080/bioalgorithmpoc-web/rest",
+        allowedFormats: "fna, dbnma",
+        category: $scope.categoryList[2]
+    };
+    $scope.algorithmList[2] = {
+        id: "3",
+        name: "blastxP",
+        description: "BlastXP - Corretora",
+        provider: "Corretora",
+        url: "http://localhost:8080/bioalgorithmpoc-web/rest",
+        allowedFormats: "faa, fna",
+        category: $scope.categoryList[0]
+    };
 
     $scope.edit = function (id) {
         $scope.edition = {};
         $scope.messageAlter = "";
-        if (id >= $scope.categoryList.length)
+        if (id >= $scope.algorithmList.length)
             $scope.salvarAlteracoes = inclusao;
         else {
-            $scope.edition = $scope.categoryList[id];
+            $scope.edition = $scope.algorithmList[id];
             $scope.salvarAlteracoes = alteracao;
         }
     };
@@ -47,7 +75,20 @@ function CategoriesController($scope, $http, $location) {
             $scope.messageAlter = "Favor preencher os campos corretamente.";
             return false;
         }
-        $http.post('www.google.com', $scope.edition).
+        
+        var auxFormats = $scope.edition.allowedFormats.split(",");
+        
+        var algorithm = (
+                {id: $scope.algorithmList.length + 1,
+                    name: $scope.edition.name,
+                    description: $scope.edition.description,
+                    provider: $scope.edition.provider,
+                    url: $scope.edition.url,
+                    classification: $scope.edition.category,
+                    allowedFormats: auxFormats
+                });
+        
+        $http.post('www.google.com', algorithm).
                 success(function (data, status, headers, config) {
                     $scope.mensagem = "Alterações salvas com sucesso.";
                     $("#myMessage").show().delay(5000).fadeOut();
@@ -65,22 +106,28 @@ function CategoriesController($scope, $http, $location) {
             $scope.messageAlter = "Favor preencher os campos corretamente.";
             return false;
         }
-        var category = (
-                {id: $scope.categoryList.length + 1,
+        
+        var auxFormats = $scope.edition.allowedFormats.split(",");
+        
+        var algorithm = (
+                {id: $scope.algorithmList.length + 1,
                     name: $scope.edition.name,
                     description: $scope.edition.description,
-                    url: $scope.edition.url
+                    provider: $scope.edition.provider,
+                    url: $scope.edition.url,
+                    classification: $scope.edition.category,
+                    allowedFormats: auxFormats
                 });
                 
-        $http.post('www.google.com', category).
+        $http.post('www.google.com', algorithm).
                 success(function (data, status, headers, config) {
                     $scope.mensagem = "Registro incluído com sucesso.";
-                    $scope.categoryList.push(category);
+                    $scope.algorithmList.push(algorithm);
                     $("#myMessage").show().delay(5000).fadeOut();
                 }).
                 error(function (data, status, headers, config) {
                     $scope.mensagem = "Registro não pode ser incluído";
-                    $scope.categoryList.push(category);
+                    $scope.categoryList.push(algorithm);
                     $("#myMessage").show().delay(5000).fadeOut();
                 });
                 

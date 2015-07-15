@@ -8,15 +8,14 @@
 angular.module('bioIntegrator').controller('LoggedController', LoggedController);
 
 
-function LoggedController($scope, $location)
+function LoggedController($scope, LoginService)
 {
-    $scope.user = "";
+    $scope.user = LoginService.getLogin();
     $scope.logout = function(){
+        LoginService.setLogin("");
         $scope.user = "";
     };
-    
-    $scope.$on('someEvent', function(event, args) {
-        console.log('recebeu evento.');
-        $scope.user = args.username;
-    });
+    $scope.isLogged = function(){
+      return LoginService.getLogin();  
+    };
 };

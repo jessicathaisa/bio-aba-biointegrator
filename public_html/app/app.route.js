@@ -15,5 +15,6 @@ angular.module('bioIntegrator')
                         when('/administrador/login', {templateUrl: 'app/components/administrador/login.html', controller: ''}).
                         when('/administrador/home', {templateUrl: 'app/components/administrador/homePage.html', controller: ''}).
                         when('/administrador/categories', {templateUrl: 'app/components/administrador/categories.html', controller: ''}).
+                        when('/administrador/algorithms', {templateUrl: 'app/components/administrador/algorithms.html', controller: ''}).
                         otherwise({redirectTo: '/home'});
             }]);

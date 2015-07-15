@@ -64,7 +64,7 @@ function BioTask($scope, $location, $http, $localStorage) {
             $scope.task = data;
             $localStorage.message = $scope.task.taskKey;
             alert($scope.task.taskKey);
-            $location.absUrl($location.host() + '/executingAlgorithm.html');
+                    $location.path("/administrador/home");
         }).error(function () {
             $('#modalSubmitError').modal('show');
         });

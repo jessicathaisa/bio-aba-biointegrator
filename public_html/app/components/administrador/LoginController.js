@@ -7,20 +7,20 @@
 
 angular.module("bioIntegrator").controller("LoginController", LoginController);
 
-function LoginController($scope, $http, $location) {
+function LoginController($scope, $http, $location, LoginService) {
     $scope.email = "";
     $scope.senha = "";
 
-    $scope.submit = function () {
+    $scope.submitLogin = function () {
         $http.post('www.google.com', {'email': $scope.email, 'senha': $scope.senha}).
                 success(function (data, status, headers, config) {
                     $location.path("/administrador/home");
+                    LoginService.setLogin($scope.email);
                 }).
                 error(function (data, status, headers, config) {
                     $scope.mensagem = "Login e/ou senha inválido(s)."
                     $location.path("/administrador/home");
+                    LoginService.setLogin($scope.email);
                 });
-        $scope.$emit('someEvent', {username: $scope.email});
-        console.log('enviou evento.');
     };
 }
