@@ -4,39 +4,49 @@
  * and open the template in the editor.
  */
 
-angular.module("bioIntegrator").controller("CategoriesController", CategoriesController);
+angular.module("bioIntegrator").controller("DatabasesController", DatabasesController);
 
-function CategoriesController($scope, $http, $location) {
-    $scope.categoryList = [];
+function DatabasesController($scope, $http, $location) {
+    $scope.databaseList = [];
 
     $scope.salvarAlteracoes;
 
-    $scope.categoryList[0] = {
+    $scope.databaseList[0] = {
         id: "1",
-        name: "Aligment Algorithms",
-        description: "Algoritmos que fazem alinhamento de sequências de nucleotídeos e proteínas",
-        url: "/categories/alignment"
+        name: "protein_refseq",
+        description: "Base de Dados de proteínas",
+        url: "www.google.com",
+        format: "faa"
     };
-    $scope.categoryList[1] = {
+    $scope.databaseList[1] = {
         id: "2",
-        name: "Data Base Format Change",
-        description: "Algoritmos que permitem mudar os formatos dos banco de dados",
-        url: "/categories/changeFormat"
+        name: "human_been_refseq",
+        description: "Base de Dados de proteínas de Seres Humanos",
+        url: "www.google.com",
+        format: "faa"
     };
-    $scope.categoryList[2] = {
+    $scope.databaseList[2] = {
         id: "3",
-        name: "DoubleCheck For Smilarities",
-        description: "Algoritmos que permitem mudar os formatos dos banco de dadosAlgoritmos que fazem uma busca dupla de similaridades entre sequências",
-        url: "/categories/doubleCheck"
+        name: "human_been_nucleotydes",
+        description: "Base de Dados de DNA de Seres Humanos",
+        url: "www.uol.com",
+        format: "fna"
+    };
+    $scope.databaseList[3] = {
+        id: "4",
+        name: "mouse.1.protein.faa",
+        description: "Base de Dados de proteínas de Ratos",
+        url: "www.yahoo.com",
+        format: "faa"
     };
 
     $scope.edit = function (id) {
         $scope.edition = {};
         $scope.messageAlter = "";
-        if (id >= $scope.categoryList.length)
+        if (id >= $scope.databaseList.length)
             $scope.salvarAlteracoes = inclusao;
         else {
-            $scope.edition = $scope.categoryList[id];
+            $scope.edition = $scope.databaseList[id];
             $scope.salvarAlteracoes = alteracao;
         }
     };
@@ -47,7 +57,16 @@ function CategoriesController($scope, $http, $location) {
             $scope.messageAlter = "Favor preencher os campos corretamente.";
             return false;
         }
-        $http.post('www.google.com', $scope.edition).
+        
+        var database = (
+                {id: $scope.databaseList.length + 1,
+                    name: $scope.edition.name,
+                    description: $scope.edition.description,
+                    url: $scope.edition.url,
+                    format: $scope.edition.format
+                });
+        
+        $http.post('www.google.com', database).
                 success(function (data, status, headers, config) {
                     $scope.mensagem = "Alterações salvas com sucesso.";
                     $("#myMessage").show().delay(5000).fadeOut();
@@ -65,22 +84,25 @@ function CategoriesController($scope, $http, $location) {
             $scope.messageAlter = "Favor preencher os campos corretamente.";
             return false;
         }
-        var category = (
-                {id: $scope.categoryList.length + 1,
+        
+        
+        var database = (
+                {id: $scope.databaseList.length + 1,
                     name: $scope.edition.name,
                     description: $scope.edition.description,
-                    url: $scope.edition.url
+                    url: $scope.edition.url,
+                    format: $scope.edition.format
                 });
                 
-        $http.post('www.google.com', category).
+        $http.post('www.google.com', database).
                 success(function (data, status, headers, config) {
                     $scope.mensagem = "Registro incluído com sucesso.";
-                    $scope.categoryList.push($scope.edition);
+                    $scope.databaseList.push($scope.edition);
                     $("#myMessage").show().delay(5000).fadeOut();
                 }).
                 error(function (data, status, headers, config) {
                     $scope.mensagem = "Registro não pode ser incluído";
-                    $scope.categoryList.push($scope.edition);
+                    $scope.databaseList.push($scope.edition);
                     $("#myMessage").show().delay(5000).fadeOut();
                 });
                 

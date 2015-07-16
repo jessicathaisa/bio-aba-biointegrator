@@ -122,12 +122,12 @@ function AlgorithmsController($scope, $http, $location) {
         $http.post('www.google.com', algorithm).
                 success(function (data, status, headers, config) {
                     $scope.mensagem = "Registro incluído com sucesso.";
-                    $scope.algorithmList.push(algorithm);
+                    $scope.algorithmList.push($scope.edition);
                     $("#myMessage").show().delay(5000).fadeOut();
                 }).
                 error(function (data, status, headers, config) {
                     $scope.mensagem = "Registro não pode ser incluído";
-                    $scope.categoryList.push(algorithm);
+                    $scope.algorithmList.push($scope.edition);
                     $("#myMessage").show().delay(5000).fadeOut();
                 });
                 

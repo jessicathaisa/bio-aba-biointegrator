@@ -1,8 +1,8 @@
-<div class="container"  ng-controller="AlgorithmsController">
-    <h3>Algoritmos</h3>
+<div class="container"  ng-controller="DatabasesController">
+    <h3>Bases de Dados</h3>
     <div class="row">
         <div class="col-md-10">
-            <p>Nesta área é possível editar os dados dos algoritmos existentes para cada categoria, bem como cadastrar novos e excluir os que não são mais necessários. </p>
+            <p>Nesta área é possível editar as dados das bases de dados, bem como cadastrar novas e excluir as que não são mais necessárias. </p>
         </div>
         <div class="col-md-offset-1 col-md-1">
             <p><button class="btn btn-success btn-sm"  data-toggle="modal" data-target="#myModal" ng-click="edit(categoryList.length);">Novo</button></p>
@@ -21,25 +21,21 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Categoria</th>
-                            <th>Nome do Algoritmo</th>
+                            <th>Nome da Base de Dados</th>
                             <th>Descrição</th>
-                            <th>Provedor</th>
                             <th>URL</th>
-                            <th>Formatos</th>
+                            <th>Formato</th>
                             <th>Editar</th>
                             <th>Excluir</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="algorithm in algorithmList">
-                            <td>{{algorithm.id}}</td>
-                            <td>{{algorithm.category.name}}</td>
-                            <td>{{algorithm.name}}</td>
-                            <td>{{algorithm.description}}</td>
-                            <td>{{algorithm.provider}}</td>
-                            <td>{{algorithm.url}}</td>
-                            <td>{{algorithm.allowedFormats}}</td>
+                        <tr ng-repeat="database in databaseList">
+                            <td>{{database.id}}</td>
+                            <td>{{database.name}}</td>
+                            <td>{{database.description}}</td>
+                            <td>{{database.url}}</td>
+                            <td>{{database.format}}</td>
                             <td><a href="/" data-toggle="modal" data-target="#myModal" ng-click="edit($index);"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
                             <td><span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span></td>
                         </tr>
@@ -60,15 +56,6 @@
                             <div class="alert alert-danger" ng-show="messageAlter">
                                 {{messageAlter}}
                             </div>
-                            <div class="form-group">
-                                <label>Categoria</label>
-                                <select class="form-control width-max-sized"
-                                        ng-model='edition.category'
-                                        ng-options="category.name for category in categoryList"
-                                        ng-change="selectedAlgorithmChanged()" required>
-                                    <option value="">Escolha a categoria</option>
-                                </select>
-                            </div>
                             <div class="form-group" show-errors>
                                 <label>Nome</label>
                                 <input type="text" class="form-control" ng-model="edition.name" name="name" required>
@@ -78,16 +65,12 @@
                                 <input type="text" class="form-control" ng-model="edition.description" name="description" required>
                             </div>
                             <div class="form-group" show-errors>
-                                <label>Provedor</label>
-                                <input type="text" class="form-control" ng-model="edition.provider" name="provider" required>
-                            </div>
-                            <div class="form-group" show-errors>
                                 <label>URL</label>
                                 <input type="text" class="form-control" ng-model="edition.url" name="url" required>
                             </div>
                             <div class="form-group" show-errors>
-                                <label>Formatos (separados por vírgula)</label>
-                                <input type="text" class="form-control" ng-model="edition.allowedFormats" name="allowedFormats" required>
+                                <label>Formato</label>
+                                <input type="text" class="form-control" ng-model="edition.format" name="format" required>
                             </div>
                         </form>
                     </div>
