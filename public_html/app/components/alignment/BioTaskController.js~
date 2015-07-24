@@ -11,7 +11,7 @@ function BioTask($scope, $location, $http, $localStorage) {
     $scope.taskParameters = [];
     $scope.chooseTaskName = "";
     
-    $scope.chooseTask = function(){
+    $scope.chooseTask = funtion(){
     	$localStorage.message = $scope.chooseTaskName;
       $location.path("/algorithms/alignment/result");
     };

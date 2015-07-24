@@ -1,0 +1,15 @@
+			<div class='container' ng-controller="RunningTask">
+            <div class='row' >
+                <div ng-hide='task.result' class='col-md-12 well well-sm'>
+                    <p>Running {{task.taskKey}} ... </p>
+                </div>
+                <div ng-show='task.result' class='col-md-12 well well-sm'>
+                    <p>Showing results for Task {{task.taskKey}}. </p>
+                </div>
+            </div>
+            <div class='row' >
+            	<div ng-bind-html="task.result" class='col-md-12' style="word-wrap: break-word;">
+					</div>
+            </div>
+            
+        </div>

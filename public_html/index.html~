@@ -12,7 +12,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-sanitize.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 $('.dropdown-toggle').dropdown();

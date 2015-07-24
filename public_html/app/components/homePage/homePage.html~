@@ -34,7 +34,7 @@
         <div class="col-md-5 col-md-offset-1">
             <div class="row well well-lg">
                 <h2>{{'CATEGORIES' | translate}}</h2>
-                <p><a href="#/algorithms/alignment/">Alinhamento</a></p>
+                <p><a href="#/help/">Alinhamento</a></p>
                 <p><a href="#/help/">Similaridade</a></p>
                 <p><a href="#/help/">Conversão de Bases de Dados</a></p>
             </div>
