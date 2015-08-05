@@ -17,7 +17,7 @@
         <div class='col-lg-6'>
         <img src="assets/img/github.png" class="img-rounded" width="100px">
         <p><br/>Para contribuir basta acessar os repositórios do github disponibilizados.</p>
-        <p><a href="https://github.com/jessicathaisa/bio-aba-biointegrator">BioIntegrator</a><br/>
+        <p><br/><a href="https://github.com/jessicathaisa/bio-aba-biointegrator">BioIntegrator</a><br/>
         <a href="https://github.com/jessicathaisa/bio-aba-bioalgorithm-poc">BioAlgorithm-POC</a><br/>
         <a href="https://github.com/jessicathaisa/bio-aba-task-manager">TaskManager</a></p>
         <p>Neles você pode encontrar todas as instruções sobre como contribuir com desenvolvimentos, submetendo melhorias e novas ideias para o sistema.</p>

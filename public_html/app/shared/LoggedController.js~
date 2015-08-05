@@ -20,7 +20,6 @@ function LoggedController($scope, LoginService)
         $scope.user = "";
       });
     };
-    
     $scope.isLogged = function(){
       return LoginService.getLogin();  
     };

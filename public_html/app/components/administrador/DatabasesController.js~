@@ -6,13 +6,8 @@
 
 angular.module("bioIntegrator").controller("DatabasesController", DatabasesController);
 
-function DatabasesController($scope, $http, $location, LoginService) {
+function DatabasesController($scope, $http, $location) {
     $scope.databaseList = [];
-    
-    if(LoginService.getLogin() === undefined || LoginService.getLogin() === ""){
-	    $location.path("/administrador/login");
-    	 return;
-    }
 
     $scope.salvarAlteracoes;
 
@@ -34,7 +29,11 @@ function DatabasesController($scope, $http, $location, LoginService) {
     $http.get('http://localhost:9966/taskmanager-web/rest/biodatabase').
             success(function (data) {
                 $scope.databaseList = data;
-            });
+            }).
+                error(function (data, status, headers, config) {
+                    $location.path("/administrador/login");
+                    $scope.mensagem = "Usuário não logado.";
+                });
 
     $scope.edit = function (id) {
         $scope.edition = {};

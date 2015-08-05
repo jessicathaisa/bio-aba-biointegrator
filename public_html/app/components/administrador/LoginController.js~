@@ -19,6 +19,8 @@ function LoginController($scope, $http, $location, LoginService) {
                 }).
                 error(function (data, status, headers, config) {
                     $scope.mensagem = "Login e/ou senha inválido(s)."
+                    //$location.path("/administrador/home");
+                    //LoginService.setLogin($scope.email);
                 });
     };
 }
